@@ -5,14 +5,14 @@ Documentation for DogeConnect Payment Protocol, available at connect.dogecoin.or
 ### Building
 
 ```sh
-mdbook build
+npm ci
+npm run build
 ```
 
-### Dependencies
+The site deploys as a Next.js application on Vercel.
 
-* https://rust-lang.github.io/mdBook/guide/installation.html
-* https://github.com/badboy/mdbook-mermaid
+### Development
 
 ```sh
-cargo install mdbook-mermaid
+npm run dev
 ```

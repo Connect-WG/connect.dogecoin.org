@@ -1,9 +1,12 @@
-# Schema Reference
+---
+title: Schema Reference
+description: Quick reference for DogeConnect JSON schemas, enums, and relay payloads.
+---
 
 Quick reference for all DogeConnect JSON schemas.
 
 All `8-DP string` fields are decimal strings with up to 8 decimal places representing Dogecoin amounts.
-See [Payment Envelope](../payment_envelope/envelope.md#8-dp-string) for details.
+See [Payment Envelope](/docs/payment-envelope#8-dp-string) for details.
 
 ### Optional String Fields
 
@@ -56,7 +59,8 @@ See [Payment Envelope](../payment_envelope/envelope.md#8-dp-string) for details.
 
 Signed wrapper around a Connect Payment payload.
 
-<!-- ANCHOR: connect_envelope -->
+<section id="connect_envelope">
+
 ```json
 {
 	"version": "1.0",             // MUST be 1.0
@@ -65,7 +69,6 @@ Signed wrapper around a Connect Payment payload.
 	"sig": "202d831c6437c.."     // Payload Signature, BIP-340 Schnorr (64 bytes)
 }
 ```
-<!-- ANCHOR_END: connect_envelope -->
 
 | Field | Type | Required | Description |
 |---|---|---|---|
@@ -74,12 +77,15 @@ Signed wrapper around a Connect Payment payload.
 | `pubkey` | string | yes | Relay public key, BIP-340 Schnorr X-only (32 bytes, hex) |
 | `sig` | string | yes | Payload signature, BIP-340 Schnorr (64 bytes, hex) |
 
+</section>
+
 
 ## Connect Payment
 
 The decoded payload inside a Connect Envelope.
 
-<!-- ANCHOR: connect_payment -->
+<section id="connect_payment">
+
 ```json
 {
 	"type": "payment",                       // MUST be "payment"
@@ -108,7 +114,6 @@ The decoded payload inside a Connect Envelope.
 	"outputs": []                            // List of outputs to pay (Connect Outputs)
 }
 ```
-<!-- ANCHOR_END: connect_payment -->
 
 | Field | Type | Required | Description |
 |---|---|---|---|
@@ -137,12 +142,15 @@ The decoded payload inside a Connect Envelope.
 | `items` | array | yes | List of Connect Items |
 | `outputs` | array | yes | List of Connect Outputs |
 
+</section>
+
 
 ## Connect Item
 
 A line item within a Connect Payment.
 
-<!-- ANCHOR: connect_item -->
+<section id="connect_item">
+
 ```json
 {
 	"type": "item",                           // item, tax, fee, shipping, discount, donation, signing
@@ -156,7 +164,6 @@ A line item within a Connect Payment.
 	"tax": "1.9495"                           // tax on this item, 8-DP string (optional)
 }
 ```
-<!-- ANCHOR_END: connect_item -->
 
 | Field | Type | Required | Description |
 |---|---|---|---|
@@ -170,12 +177,15 @@ A line item within a Connect Payment.
 | `total` | string | conditional | count x unit, 8-DP string; required for all types except `signing` |
 | `tax` | string | no | Tax on this item, 8-DP string; MUST be omitted for `signing` |
 
+</section>
+
 
 ## Connect Output
 
 A transaction output the wallet must pay.
 
-<!-- ANCHOR: connect_output -->
+<section id="connect_output">
+
 **P2PKH output** (`type` defaults to `"p2pkh"` if omitted):
 
 ```json
@@ -210,14 +220,16 @@ For `"data"` outputs, `data` is required and `address` and `amount` MUST be omit
 The wallet MUST create an `OP_RETURN` output carrying the decoded bytes.
 The `data` value MUST be a valid hex string (even number of hex characters) and the
 decoded payload MUST NOT exceed 80 bytes, which is the maximum OP_RETURN data size.
-<!-- ANCHOR_END: connect_output -->
+
+</section>
 
 
 ## Payment Submission
 
 The wallet's submission to the relay's `pay` endpoint in response to a Connect Payment.
 
-<!-- ANCHOR: payment_submission -->
+<section id="payment_submission">
+
 ```json
 {
 	"id": "PID-123",                    // Relay-unique Payment ID from Connect Payment
@@ -226,7 +238,6 @@ The wallet's submission to the relay's `pay` endpoint in response to a Connect P
 	"relay_token": "eyJpZCI6IlBJRC..." // Relay token from Connect Payment, if present
 }
 ```
-<!-- ANCHOR_END: payment_submission -->
 
 | Field | Type | Required | Description |
 |---|---|---|---|
@@ -235,12 +246,15 @@ The wallet's submission to the relay's `pay` endpoint in response to a Connect P
 | `refund` | string | no | Customer-provided Dogecoin address for refunds; tx input addresses may not return funds to the customer (e.g. exchange deposits), so this provides a guaranteed return path (recommended) |
 | `relay_token` | string | conditional | Opaque relay token; required when the Connect Payment contained a `relay_token` |
 
+</section>
+
 
 ## Payment Status
 
 The relay's response from both the `pay` and `status` endpoints.
 
-<!-- ANCHOR: payment_status_accepted -->
+<section id="payment_status_accepted">
+
 ```json
 {
 	"id": "PID-123",
@@ -251,9 +265,11 @@ The relay's response from both the `pay` and `status` endpoints.
 	"due_sec": 300
 }
 ```
-<!-- ANCHOR_END: payment_status_accepted -->
 
-<!-- ANCHOR: payment_status_declined -->
+</section>
+
+<section id="payment_status_declined">
+
 ```json
 {
 	"id": "PID-123",
@@ -261,7 +277,8 @@ The relay's response from both the `pay` and `status` endpoints.
 	"reason": "Transaction deemed too risky"
 }
 ```
-<!-- ANCHOR_END: payment_status_declined -->
+
+</section>
 
 | Field | Type | Required | Description |
 |---|---|---|---|
@@ -279,33 +296,37 @@ The relay's response from both the `pay` and `status` endpoints.
 
 Query the current status of a payment, submitted to the relay's `status` endpoint.
 
-<!-- ANCHOR: status_query -->
+<section id="status_query">
+
 ```json
 {
 	"id": "PID-123" // Relay-unique Payment ID from Connect Payment
 }
 ```
-<!-- ANCHOR_END: status_query -->
 
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `id` | string | yes | Relay-unique payment ID from Connect Payment |
+
+</section>
 
 
 ## Error Response
 
 Returned by the relay when a request fails.
 
-<!-- ANCHOR: error_response -->
+<section id="error_response">
+
 ```json
 {
 	"error": "invalid_tx",
 	"message": "Transaction outputs do not match requested amounts"
 }
 ```
-<!-- ANCHOR_END: error_response -->
 
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `error` | string | yes | ErrorCode enum |
 | `message` | string | yes | Human-readable error detail |
+
+</section>

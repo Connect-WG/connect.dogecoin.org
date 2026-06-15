@@ -1,4 +1,7 @@
-# Payment Relay
+---
+title: Payment Relay
+description: Relay API endpoints, submissions, statuses, and error handling.
+---
 
 The _Payment Relay_ base URL is found in the `relay` field of _Connect Payment_.
 
@@ -38,7 +41,7 @@ The token format is entirely up to the relay implementation.
 
 The wallet's submission to the relay's `pay` endpoint in response to a _Connect Payment_.
 
-{{#include ../schema_reference/schema_reference.md:payment_submission}}
+<include>./schema-reference.mdx#payment_submission</include>
 
 
 ### Payment Status
@@ -47,11 +50,11 @@ Both the `pay` and `status` endpoints return a _Payment Status_ response.
 
 **200 — Accepted:**
 
-{{#include ../schema_reference/schema_reference.md:payment_status_accepted}}
+<include>./schema-reference.mdx#payment_status_accepted</include>
 
 **403 — Declined:**
 
-{{#include ../schema_reference/schema_reference.md:payment_status_declined}}
+<include>./schema-reference.mdx#payment_status_declined</include>
 
 The `status` field is a _PaymentStatus_ enum value. The `txid` field
 contains the hex-encoded transaction ID and is present whenever the
@@ -82,7 +85,7 @@ i.e. during a short-term blockchain fork.
 
 ### Error Response
 
-{{#include ../schema_reference/schema_reference.md:error_response}}
+<include>./schema-reference.mdx#error_response</include>
 
 
 ### HTTP Status Codes
@@ -115,4 +118,4 @@ and a small random jitter.
 
 This allows the wallet to query the current status of a payment.
 
-{{#include ../schema_reference/schema_reference.md:status_query}}
+<include>./schema-reference.mdx#status_query</include>

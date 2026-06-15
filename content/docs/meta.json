@@ -1,0 +1,10 @@
+{
+  "title": "DogeConnect",
+  "pages": [
+    "index",
+    "payment-qr-code",
+    "payment-envelope",
+    "payment-relay",
+    "schema-reference"
+  ]
+}

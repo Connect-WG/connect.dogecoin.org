@@ -1,16 +1,21 @@
+---
+title: Payment Envelope
+description: Signed payment envelope schema and wallet verification steps.
+---
+
 ## Payment Envelope Schema
 
 ### Connect Envelope
 
-{{#include ../schema_reference/schema_reference.md:connect_envelope}}
+<include>./schema-reference.mdx#connect_envelope</include>
 
 ### Connect Payment
 
-{{#include ../schema_reference/schema_reference.md:connect_payment}}
+<include>./schema-reference.mdx#connect_payment</include>
 
 ### Connect Item
 
-{{#include ../schema_reference/schema_reference.md:connect_item}}
+<include>./schema-reference.mdx#connect_item</include>
 
 For items with `"type": "signing"`, the `count`, `unit`, `total`, and `tax` fields are
 not applicable and MUST be omitted. A `signing` item represents a payload being
@@ -20,7 +25,7 @@ broadcasting data, not just making a payment.
 
 ### Connect Output
 
-{{#include ../schema_reference/schema_reference.md:connect_output}}
+<include>./schema-reference.mdx#connect_output</include>
 
 ### 8-DP string
 
@@ -42,7 +47,7 @@ signed by the _Payment Relay's_ private key.
 
 Use the following steps to decode and verify the payload.
 
-1. Ensure you verify the `pubkey` hash as described in the [Payment QR-Code](../qr_codes/qr_codes.md) section.
+1. Ensure you verify the `pubkey` hash as described in the [Payment QR-Code](/docs/payment-qr-code) section.
 2. Decode the Base64-encoded `payload` field, yielding bytes.
 3. Decode the Hex-encoded `pubkey` and `sig` fields, yielding bytes.
 4. Compute the Double-SHA256 of the decoded payload bytes from step 2, i.e. `SHA-256(SHA-256(bytes))`
@@ -54,24 +59,24 @@ Use the following steps to decode and verify the payload.
 7. Parse the JSON payload bytes using a standard JSON parser.
 8. Check the `timeout` field: do not submit a payment transaction after the time `issued` + `timeout`.
 9. Display the payment information and ask the user to confirm payment.
-10. Create and sign a payment transaction and submit it to the [Payment Relay](../payment_relay/relay.md).
+10. Create and sign a payment transaction and submit it to the [Payment Relay](/docs/payment-relay).
     If the Connect Payment contains a `relay_token`, include it in the Payment Submission.
 
 The goals of the above process are to verify that the _Payment Envelope_ is cryptographically
 signed by the _Payment Relay's_ private key, i.e. the envelope was created by the _Payment Relay_.
 
-A reference implementation of these algorithms exist at [github.com/dogeorg/dogeconnect-go](https://github.com/dogeorg/dogeconnect-go)
+A reference implementation of these algorithms exists at [github.com/dogeorg/dogeconnect-go](https://github.com/dogeorg/dogeconnect-go)
 which can be packaged for mobile using [gomobile bind](https://pkg.go.dev/golang.org/x/mobile/cmd/gobind).
 
 ### BIP-340 Implementations
 
 | Language | BIP-340 Implementation                                              |
 |----------|---------------------------------------------------------------------|
-| C/C++    | <https://github.com/bitcoin-core/secp256k1>                         |
-| Go       | <https://pkg.go.dev/github.com/btcsuite/btcd/btcec/v2/schnorr>      |
-|          | <https://github.com/Yawning/secp256k1-voi>                          |
-| Rust     | <https://lib.rs/crates/secp256k1>                                   |
-| C#       | <https://github.com/zone117x/Secp256k1.Net>                         |
-| Java     | <https://github.com/SamouraiDev/BIP340_Schnorr>                     |
-| Dart     | <https://pub.dev/packages/bip340>                                   |
-| Python   | <https://github.com/bitcoin/bips/blob/master/bip-0340/reference.py> |
+| C/C++    | [bitcoin-core/secp256k1](https://github.com/bitcoin-core/secp256k1) |
+| Go       | [btcsuite Schnorr](https://pkg.go.dev/github.com/btcsuite/btcd/btcec/v2/schnorr) |
+|          | [Yawning/secp256k1-voi](https://github.com/Yawning/secp256k1-voi) |
+| Rust     | [secp256k1](https://lib.rs/crates/secp256k1) |
+| C#       | [Secp256k1.Net](https://github.com/zone117x/Secp256k1.Net) |
+| Java     | [BIP340_Schnorr](https://github.com/SamouraiDev/BIP340_Schnorr) |
+| Dart     | [bip340](https://pub.dev/packages/bip340) |
+| Python   | [BIP-0340 reference.py](https://github.com/bitcoin/bips/blob/master/bip-0340/reference.py) |
