@@ -105,37 +105,41 @@ The decoded payload inside a Connect Envelope.
 	"fiat_tax": "0.23",                      // Taxes in fiat currency, decimal string (optional)
 	"fiat_currency": "USD",                  // ISO 4217 currency code (required with fiat_total/fiat_tax)
 	"items": [],                             // List of line items to display (Connect Items)
-	"outputs": []                            // List of outputs to pay (Connect Outputs)
+	"outputs": [],                           // List of outputs to pay (Connect Outputs)
+	"meta": {                                // Vendor-specific hints, namespaced keys (optional)
+		"namespace.internal_ref": "abc123"
+	}
 }
 ```
 <!-- ANCHOR_END: connect_payment -->
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `type` | string | yes | EnvelopeType enum; MUST be `"payment"`. Exists for forward compatibility with future envelope types |
-| `id` | string | yes | Relay-unique payment ID |
-| `issued` | string | yes | RFC 3339 timestamp |
-| `timeout` | integer | yes | Timeout in seconds; do not pay after `issued + timeout` |
-| `relay` | string | yes | Payment Relay base URL |
-| `relay_token` | string | no | Opaque relay-generated token; wallet MUST echo in Payment Submission if present |
-| `fee_per_kb` | string | yes | Minimum fee per 1000 bytes that the Payment Relay is willing to accept. Wallet MUST construct a transaction meeting at least this fee rate, 8-DP string |
-| `max_size` | integer | yes | Maximum size of transaction in bytes that the Payment Relay is willing to accept |
-| `vendor_icon` | string | no | Vendor icon URL (JPG or PNG); wallet SHOULD use a placeholder when not provided |
-| `vendor_name` | string | yes | Vendor display name |
-| `vendor_address` | string | no | Vendor business address |
-| `vendor_url` | string | no | Vendor website URL |
-| `vendor_order_url` | string | no | URL to view this order on vendor's site |
-| `vendor_order_id` | string | no | Vendor's unique order identifier |
-| `order_reference` | string | no | Short customer-facing order identifier |
-| `note` | string | no | Free-text note from vendor to customer |
-| `total` | string | yes | Total including fees and taxes, 8-DP string |
-| `fees` | string | no | Fees subtotal, 8-DP string |
-| `taxes` | string | no | Taxes subtotal, 8-DP string |
-| `fiat_total` | string | no | Total in fiat currency, decimal string |
-| `fiat_tax` | string | no | Taxes in fiat currency, decimal string |
-| `fiat_currency` | string | conditional | ISO 4217 currency code; required when `fiat_total` or `fiat_tax` is present |
-| `items` | array | yes | List of Connect Items |
-| `outputs` | array | yes | List of Connect Outputs |
+| Field | Type | Required | Description                                                                                                                                                                                                                                                        |
+|---|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type` | string | yes | EnvelopeType enum; MUST be `"payment"`. Exists for forward compatibility with future envelope types                                                                                                                                                                |
+| `id` | string | yes | Relay-unique payment ID                                                                                                                                                                                                                                            |
+| `issued` | string | yes | RFC 3339 timestamp                                                                                                                                                                                                                                                 |
+| `timeout` | integer | yes | Timeout in seconds; do not pay after `issued + timeout`                                                                                                                                                                                                            |
+| `relay` | string | yes | Payment Relay base URL                                                                                                                                                                                                                                             |
+| `relay_token` | string | no | Opaque relay-generated token; wallet MUST echo in Payment Submission if present                                                                                                                                                                                    |
+| `fee_per_kb` | string | yes | Minimum fee per 1000 bytes that the Payment Relay is willing to accept. Wallet MUST construct a transaction meeting at least this fee rate, 8-DP string                                                                                                            |
+| `max_size` | integer | yes | Maximum size of transaction in bytes that the Payment Relay is willing to accept                                                                                                                                                                                   |
+| `vendor_icon` | string | no | Vendor icon URL (JPG or PNG); wallet SHOULD use a placeholder when not provided                                                                                                                                                                                    |
+| `vendor_name` | string | yes | Vendor display name                                                                                                                                                                                                                                                |
+| `vendor_address` | string | no | Vendor business address                                                                                                                                                                                                                                            |
+| `vendor_url` | string | no | Vendor website URL                                                                                                                                                                                                                                                 |
+| `vendor_order_url` | string | no | URL to view this order on vendor's site                                                                                                                                                                                                                            |
+| `vendor_order_id` | string | no | Vendor's unique order identifier                                                                                                                                                                                                                                   |
+| `order_reference` | string | no | Short customer-facing order identifier                                                                                                                                                                                                                             |
+| `note` | string | no | Free-text note from vendor to customer                                                                                                                                                                                                                             |
+| `total` | string | yes | Total including fees and taxes, 8-DP string                                                                                                                                                                                                                        |
+| `fees` | string | no | Fees subtotal, 8-DP string                                                                                                                                                                                                                                         |
+| `taxes` | string | no | Taxes subtotal, 8-DP string                                                                                                                                                                                                                                        |
+| `fiat_total` | string | no | Total in fiat currency, decimal string                                                                                                                                                                                                                             |
+| `fiat_tax` | string | no | Taxes in fiat currency, decimal string                                                                                                                                                                                                                             |
+| `fiat_currency` | string | conditional | ISO 4217 currency code; required when `fiat_total` or `fiat_tax` is present                                                                                                                                                                                        |
+| `items` | array | yes | List of Connect Items                                                                                                                                                                                                                                              |
+| `outputs` | array | yes | List of Connect Outputs                                                                                                                                                                                                                                            |
+| `meta` | object | no | Opaque map of vendor-specific string hints. Keys MUST be namespaced (reverse-dotted, e.g. `namespace.internal_ref`); wallets MUST ignore keys they don't recognise. Signed with the payload but carries no protocol semantics — for vendor presentation hints only |
 
 
 ## Connect Item
